@@ -8,7 +8,6 @@ var colors_instance
 func _ready():
 	print("Starting script...")
 	add_chalks()
-	modify_tileset()
 	initialize_colors_ui()
 	detect_and_show_ui()
 
