@@ -4,12 +4,14 @@ onready var Lure = get_node("/root/SulayreLure")
 onready var colors_ui = preload("res://mods/hostileonion.chalks/Scenes/HUD/colors.tscn")
 
 var colors_instance
+var periodic_timer
 
 func _ready():
 	print("Starting script...")
 	add_chalks()
 	initialize_colors_ui()
-	detect_and_show_ui()
+	log_scene_paths()
+	start_periodic_logging()
 
 func add_chalks():
 	print("Adding chalks...")
@@ -91,26 +93,61 @@ func modify_tileset(scene_path: String, tilemap_name: String, tiles: Array):
 func initialize_colors_ui():
 	colors_instance = colors_ui.instance()
 	colors_instance.hide()
+	get_tree().root.add_child(colors_instance)
+	print("Colors UI initialized and added to root.")
 
-	# Attempt to add to `/world/Viewport/main`
-	var main_node = get_tree().get_current_scene().get_node_or_null("world/Viewport/main")
-	if main_node:
-		main_node.add_child(colors_instance)
-		print("Colors UI added to /world/Viewport/main.")
+func log_scene_paths():
+	var current_scene = get_tree().get_current_scene()
+	if current_scene:
+		print("Logging all node paths in the current scene:")
+		if check_world_viewport_main(current_scene):
+			refresh_ui()
+		else:
+			print_node_paths(current_scene)
 	else:
-		get_tree().root.add_child(colors_instance)
-		print("Colors UI added to root as fallback.")
+		print("No current scene detected yet.")
 
-func detect_and_show_ui():
-	var main_node = get_tree().get_current_scene().get_node_or_null("world/Viewport/main")
-	if main_node:
+func print_node_paths(node, current_path = ""):
+	var full_path = current_path + "/" + node.name
+	if not full_path.begins_with("/main_menu/"):
+		print(full_path)
+		for child in node.get_children():
+			print_node_paths(child, full_path)
+
+func check_world_viewport_main(node, current_path = "") -> bool:
+	var full_path = current_path + "/" + node.name
+	if full_path == "/world/Viewport/main":
 		print("Found /world/Viewport/main.")
-		show_colors_ui()
-	else:
-		print("Target node '/world/Viewport/main' not found.")
+		return true
+	for child in node.get_children():
+		if check_world_viewport_main(child, full_path):
+			return true
+	return false
 
-func show_colors_ui():
+func start_periodic_logging():
+	periodic_timer = Timer.new()
+	periodic_timer.wait_time = 10.0
+	periodic_timer.one_shot = false
+	add_child(periodic_timer)
+	periodic_timer.connect("timeout", self, "_on_periodic_log")
+	periodic_timer.start()
+
+func _on_periodic_log():
+	log_scene_paths()
+
+func refresh_ui():
 	if colors_instance:
-		colors_instance.visible = true
-		colors_instance.show()
-		print("Colors UI shown.")
+		print("Refreshing Colors UI...")
+		var main_node = get_tree().get_current_scene().get_node_or_null("world/Viewport/main")
+		if main_node:
+			if colors_instance.get_parent() != main_node:
+				colors_instance.get_parent().remove_child(colors_instance)
+				main_node.add_child(colors_instance)
+				print("Colors UI reparented to /world/Viewport/main.")
+			colors_instance.show()
+			print("Colors UI refreshed and shown.")
+
+func stop_periodic_logging():
+	if periodic_timer:
+		periodic_timer.stop()
+		periodic_timer = null
