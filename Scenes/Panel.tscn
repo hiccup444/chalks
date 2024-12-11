@@ -1,0 +1,93 @@
+[gd_scene load_steps=12 format=2]
+
+[ext_resource path="res://Scenes/Singletons/Tooltips/tooltip_node.gd" type="Script" id=1]
+[ext_resource path="res://mods/hostileonion.chalks/Textures/kikin.png" type="Texture" id=2]
+[ext_resource path="res://mods/hostileonion.chalks/Scripts/equipitem.gd" type="Script" id=3]
+[ext_resource path="res://Assets/Themes/accid___.ttf" type="DynamicFontData" id=4]
+[ext_resource path="res://Assets/Themes/main.tres" type="Theme" id=5]
+[ext_resource path="res://Assets/Textures/UI/Fishing3Minigame/star.png" type="Texture" id=6]
+
+[sub_resource type="StyleBoxFlat" id=31]
+bg_color = Color( 0.513726, 0.513726, 0.513726, 1 )
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxFlat" id=35]
+bg_color = Color( 0.419608, 0.419608, 0.419608, 1 )
+corner_radius_top_left = 25
+corner_radius_top_right = 25
+corner_radius_bottom_right = 25
+corner_radius_bottom_left = 25
+
+[sub_resource type="StyleBoxEmpty" id=34]
+
+[sub_resource type="StyleBoxEmpty" id=32]
+
+[sub_resource type="DynamicFont" id=33]
+size = 18
+extra_spacing_char = 2
+font_data = ExtResource( 4 )
+
+[node name="pastelbluechalk" type="Panel"]
+margin_right = 140.0
+margin_bottom = 160.0
+rect_min_size = Vector2( 140, 160 )
+focus_mode = 2
+theme = ExtResource( 5 )
+custom_styles/panel = SubResource( 31 )
+script = ExtResource( 3 )
+
+[node name="Icon" type="Sprite" parent="."]
+position = Vector2( 70.2272, 69.9256 )
+scale = Vector2( 1.9046, 1.68517 )
+z_index = 1
+texture = ExtResource( 2 )
+
+[node name="Favorited" type="Sprite" parent="."]
+visible = false
+position = Vector2( 138, 150 )
+scale = Vector2( 0.535714, 0.535714 )
+texture = ExtResource( 6 )
+
+[node name="Button" type="Button" parent="."]
+margin_right = 140.0
+margin_bottom = 160.0
+custom_styles/hover = SubResource( 35 )
+custom_styles/pressed = SubResource( 34 )
+custom_styles/normal = SubResource( 32 )
+
+[node name="TooltipNode" type="Control" parent="Button"]
+anchor_left = 0.007
+anchor_top = 0.012
+anchor_right = 1.0
+anchor_bottom = 1.0
+margin_left = 0.72
+margin_top = 1.592
+margin_right = 2.70001
+margin_bottom = 1.51204
+script = ExtResource( 1 )
+__meta__ = {
+"_edit_use_anchors_": true
+}
+header = "Kikin the goat fr fr"
+body = ""
+
+[node name="Color" type="Label" parent="."]
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+margin_left = -69.0
+margin_top = -40.0
+margin_right = 69.0
+margin_bottom = -6.0
+custom_colors/font_color = Color( 0.851562, 0.851562, 0.851562, 1 )
+custom_fonts/font = SubResource( 33 )
+text = "Thanks kikin!"
+align = 1
+valign = 1
+
+[connection signal="gui_input" from="Button" to="." method="_on_Button_gui_input"]
+[connection signal="pressed" from="Button" to="." method="_on_equip_pressed"]

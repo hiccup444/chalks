@@ -1,0 +1,181 @@
+[gd_scene load_steps=13 format=2]
+
+[ext_resource path="res://Assets/Themes/main.tres" type="Theme" id=1]
+[ext_resource path="res://mods/hostileonion.chalks/Scenes/Panel.tscn" type="PackedScene" id=2]
+[ext_resource path="res://mods/hostileonion.chalks/Scripts/ChalkUI.gd" type="Script" id=3]
+[ext_resource path="res://Scenes/Menus/Main Menu/ui_generic_button.gd" type="Script" id=4]
+[ext_resource path="res://mods/hostileonion.chalks/Models/untitled.fbx" type="PackedScene" id=5]
+[ext_resource path="res://mods/hostileonion.chalks/Scenes/ChalkUI_2.gd" type="Script" id=6]
+
+[sub_resource type="StyleBoxFlat" id=8]
+bg_color = Color( 0.392157, 0.380392, 0.368627, 1 )
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color( 0, 0, 0, 0.278431 )
+shadow_size = 35
+
+[sub_resource type="StyleBoxFlat" id=7]
+bg_color = Color( 0.713726, 0.698039, 0.670588, 1 )
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+shadow_color = Color( 0, 0, 0, 0.254902 )
+shadow_size = 15
+
+[sub_resource type="StyleBoxFlat" id=31]
+bg_color = Color( 0.466667, 0.466667, 0.466667, 1 )
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxFlat" id=30]
+bg_color = Color( 0.34902, 0.34902, 0.34902, 1 )
+corner_radius_top_left = 15
+corner_radius_top_right = 15
+corner_radius_bottom_right = 15
+corner_radius_bottom_left = 15
+
+[sub_resource type="StyleBoxEmpty" id=1]
+
+[sub_resource type="Animation" id=32]
+resource_name = "Open"
+length = 0.5
+tracks/0/type = "value"
+tracks/0/path = NodePath("very cool viewport:rect_position")
+tracks/0/interp = 1
+tracks/0/loop_wrap = true
+tracks/0/imported = false
+tracks/0/enabled = true
+tracks/0/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.0693481, 0.164939 ),
+"update": 0,
+"values": [ Vector2( 1807, -35 ), Vector2( 631, -35 ) ]
+}
+tracks/1/type = "value"
+tracks/1/path = NodePath("Main:rect_position")
+tracks/1/interp = 1
+tracks/1/loop_wrap = true
+tracks/1/imported = false
+tracks/1/enabled = true
+tracks/1/keys = {
+"times": PoolRealArray( 0, 0.5 ),
+"transitions": PoolRealArray( 0.0947327, 0.217638 ),
+"update": 0,
+"values": [ Vector2( -781, 73 ), Vector2( 43, 73 ) ]
+}
+
+[node name="ChalkUI" type="Control"]
+anchor_right = 1.0
+anchor_bottom = 1.0
+theme = ExtResource( 1 )
+script = ExtResource( 6 )
+
+[node name="Main" type="Panel" parent="."]
+margin_left = -781.0
+margin_top = 73.0
+margin_right = -74.0
+margin_bottom = 1013.0
+custom_styles/panel = SubResource( 8 )
+
+[node name="Background" type="Panel" parent="Main"]
+margin_left = 10.0
+margin_top = 26.0
+margin_right = 546.0
+margin_bottom = 733.0
+rect_scale = Vector2( 1.256, 1.256 )
+custom_styles/panel = SubResource( 7 )
+
+[node name="LineEdit" type="LineEdit" parent="Main/Background"]
+margin_left = 16.0
+margin_top = 10.0
+margin_right = 394.0
+margin_bottom = 48.0
+custom_colors/selection_color = Color( 0, 0, 0, 1 )
+custom_colors/font_color = Color( 0, 0, 0, 1 )
+custom_styles/normal = SubResource( 31 )
+align = 1
+placeholder_text = "Search"
+caret_blink = true
+
+[node name="Exit" type="Button" parent="Main/Background"]
+margin_left = 397.0
+margin_top = 11.0
+margin_right = 520.0
+margin_bottom = 45.0
+rect_min_size = Vector2( 50, 10 )
+custom_styles/normal = SubResource( 30 )
+text = "Close"
+script = ExtResource( 4 )
+
+[node name="AllChalks" type="ScrollContainer" parent="Main"]
+margin_left = 24.0
+margin_top = 98.0
+margin_right = 535.0
+margin_bottom = 691.0
+rect_scale = Vector2( 1.25571, 1.25571 )
+custom_styles/bg = SubResource( 1 )
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Main/AllChalks"]
+margin_right = 1412.0
+margin_bottom = 707.0
+size_flags_horizontal = 3
+size_flags_vertical = 3
+
+[node name="GridContainer" type="GridContainer" parent="Main/AllChalks/VBoxContainer"]
+margin_right = 1412.0
+margin_bottom = 707.0
+rect_min_size = Vector2( 1412, 707 )
+size_flags_horizontal = 3
+size_flags_vertical = 3
+custom_constants/vseparation = 15
+custom_constants/hseparation = 15
+columns = 3
+script = ExtResource( 3 )
+
+[node name="Panel" parent="Main/AllChalks/VBoxContainer/GridContainer" instance=ExtResource( 2 )]
+script = null
+
+[node name="very cool viewport" type="ViewportContainer" parent="."]
+margin_left = 1807.0
+margin_top = -35.0
+margin_right = 3458.0
+margin_bottom = 1402.0
+stretch = true
+stretch_shrink = 5
+
+[node name="Viewport" type="Viewport" parent="very cool viewport"]
+size = Vector2( 330, 287 )
+own_world = true
+transparent_bg = true
+handle_input_locally = false
+render_target_update_mode = 3
+
+[node name="untitled2" parent="very cool viewport/Viewport" instance=ExtResource( 5 )]
+transform = Transform( 1, 0, 0, 0, 1, 0, 0, 0, 1, -0.493397, 0, -0.89825 )
+
+[node name="Camera" type="Camera" parent="very cool viewport/Viewport"]
+transform = Transform( 0.691589, 0, 0.722292, 0, 1, 0, -0.722292, 0, 0.691589, 2.66138, -0.0839305, 2.33769 )
+
+[node name="SpotLight" type="SpotLight" parent="very cool viewport/Viewport"]
+transform = Transform( 0.893246, -1.33104e-08, 0.449568, -0.238534, 0.847632, 0.473943, -0.381068, -0.530585, 0.757143, 2.15854, 2.85407, 3.59997 )
+light_color = Color( 1, 0.878431, 0.733333, 1 )
+light_energy = 6.804
+spot_range = 4096.0
+
+[node name="SpotLight2" type="SpotLight" parent="very cool viewport/Viewport"]
+transform = Transform( -0.316449, 0.393551, -0.863121, -0.238534, 0.847632, 0.473943, 0.918129, 0.355863, -0.174357, -3.26602, 0.760521, 0.511865 )
+light_color = Color( 1, 0.878431, 0.733333, 1 )
+light_energy = 6.804
+spot_range = 4096.0
+
+[node name="Anim" type="AnimationPlayer" parent="."]
+anims/Open = SubResource( 32 )
+
+[connection signal="text_changed" from="Main/Background/LineEdit" to="Main/AllChalks/VBoxContainer/GridContainer" method="_on_searchbar_text_changed"]
+[connection signal="pressed" from="Main/Background/Exit" to="Main/AllChalks/VBoxContainer/GridContainer" method="_on_Exit_pressed"]
+[connection signal="scroll_ended" from="Main/AllChalks" to="Main/AllChalks" method="_on_scroll_ended"]
